@@ -203,7 +203,7 @@ func (v *ValidateShoot) Admit(ctx context.Context, a admission.Attributes, _ adm
 		return nil
 	}
 
-	// Ignore updates to all subresources, except for binding
+	// Ignore updates to all subresources, except for binding.
 	// Binding subresource is required because there are fields being set in the shoot
 	// when it is scheduled and we want this plugin to be triggered.
 	if a.GetSubresource() != "" && a.GetSubresource() != "binding" {
@@ -331,7 +331,7 @@ func (v *ValidateShoot) Admit(ctx context.Context, a admission.Attributes, _ adm
 	}
 
 	validationContext.addMetadataAnnotations(a)
-
+	allErrs = append(allErrs, validationContext.ValidateCapabilities()...)
 	allErrs = append(allErrs, validationContext.validateAPIVersionForRawExtensions()...)
 	allErrs = append(allErrs, validationContext.validateShootNetworks(a, helper.IsWorkerless(shoot))...)
 	allErrs = append(allErrs, validationContext.validateKubernetes(a)...)
@@ -785,7 +785,7 @@ func (c *validationContext) addMetadataAnnotations(a admission.Attributes) {
 		addInfrastructureDeploymentTask(c.shoot)
 	}
 
-	// We rely that SSHAccess is defaulted in the shoot creation, that is why we do not check for nils for the new shoot object.
+	// We rely on that SSHAccess is defaulted in the shoot creation, that is why we do not check for nils for the new shoot object.
 	if c.oldShoot.Spec.Provider.WorkersSettings != nil &&
 		c.oldShoot.Spec.Provider.WorkersSettings.SSHAccess != nil &&
 		c.oldShoot.Spec.Provider.WorkersSettings.SSHAccess.Enabled != c.shoot.Spec.Provider.WorkersSettings.SSHAccess.Enabled {
@@ -1827,7 +1827,7 @@ func getDefaultMachineImage(machineImages []gardencorev1beta1.MachineImage, imag
 	if image != nil {
 		providerConfig = image.ProviderConfig
 	}
-	return &core.ShootMachineImage{Name: defaultImage.Name, ProviderConfig: providerConfig, Version: latestMachineImageVersion.Version}, nil
+	return &core.ShootMachineImage{Name: defaultImage.Name, ProviderConfig: providerConfig, Version: latestMachineImageVersion.Version, CapabilitySets: latestMachineImageVersion.CapabilitySets}, nil
 }
 
 func parseSemanticVersionPart(part string) (*uint64, error) {

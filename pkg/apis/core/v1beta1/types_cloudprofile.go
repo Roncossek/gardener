@@ -5,6 +5,7 @@
 package v1beta1
 
 import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -77,6 +78,12 @@ type CloudProfileSpec struct {
 	// Bastion contains the machine and image properties
 	// +optional
 	Bastion *Bastion `json:"bastion,omitempty" protobuf:"bytes,10,opt,name=bastion"`
+	// Capabilities contains the definition of all possible capabilities of the CloudProfile.
+	// Only capabilities and values defined here can be used in the MachineImage and MachineType definitions.
+	// The order of the capability values are relevant. To the left are the most important values.
+	// During maintenance upgrades the image that enables most important capabilities will be selected.
+	// +optional
+	CapabilitiesDefinition Capabilities `json:"capabilitiesDefinition,omitempty" protobuf:"bytes,11,opt,name=capabilitiesDefinition"`
 }
 
 // SeedSelector contains constraints for selecting seed to be usable for shoots using a profile
@@ -130,6 +137,12 @@ type MachineImageVersion struct {
 	// - '< 1.26' - supports only kubelet versions less than 1.26
 	// +optional
 	KubeletVersionConstraint *string `json:"kubeletVersionConstraint,omitempty" protobuf:"bytes,4,opt,name=kubeletVersionConstraint"`
+	// Capabilities contains the set of capabilities of a logical MachineImage version.
+	// +optional
+	CapabilitySets []apiextensionsv1.JSON `json:"capabilitySets,omitempty" protobuf:"bytes,5,rep,name=capabilitySets"`
+	// inlining -- FAILED
+	// -> Error from server (BadRequest): error when creating "capability-cloudprofile.yaml": CloudProfile in version "v1beta1" cannot be handled as a CloudProfile: strict decoding error: unknown field "spec.machineTypes[0].capabilities.architecture", unknown field "spec.machineTypes[0].capabilities.secureBoot"
+	//https://github.com/kubernetes/apiextensions-apiserver/blob/5d3ea2d0d879813fce8d376933995a7aab8eaf49/pkg/apis/apiextensions/types_jsonschema.go#L283
 }
 
 // ExpirableVersion contains a version and an expiration date.
@@ -163,6 +176,9 @@ type MachineType struct {
 	// Architecture is the CPU architecture of this machine type.
 	// +optional
 	Architecture *string `json:"architecture,omitempty" protobuf:"bytes,7,opt,name=architecture"`
+	// Capabilities contains the capabilities of the machine type.
+	// +optional
+	Capabilities Capabilities `json:"capabilities,omitempty" protobuf:"bytes,8,opt,name=capabilities"`
 }
 
 // MachineTypeStorage is the amount of storage associated with the root volume of this machine type.

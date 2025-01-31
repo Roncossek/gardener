@@ -9,6 +9,7 @@ import (
 
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -1678,6 +1679,9 @@ type Machine struct {
 	// Architecture is CPU architecture of machines in this worker pool.
 	// +optional
 	Architecture *string `json:"architecture,omitempty" protobuf:"bytes,3,opt,name=architecture"`
+	// Capabilities contains the union of capabilities of a logical MachineImage version.
+	// +optional
+	Capabilities Capabilities `json:"capabilities,omitempty" protobuf:"bytes,4,name=capabilities"`
 }
 
 // ShootMachineImage defines the name and the version of the shoot's machine image in any environment. Has to be
@@ -1692,6 +1696,9 @@ type ShootMachineImage struct {
 	// If version is not provided, it will be defaulted to the latest version from the CloudProfile.
 	// +optional
 	Version *string `json:"version,omitempty" protobuf:"bytes,3,opt,name=version"`
+	// Capabilities contains the union of capabilities of a logical MachineImage version.
+	// +optional
+	CapabilitySets []apiextensionsv1.JSON `json:"capabilitySets,omitempty" protobuf:"bytes,4,rep,name=capabilitySets"`
 }
 
 // Volume contains information about the volume type, size, and encryption.

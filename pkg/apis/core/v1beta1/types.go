@@ -48,3 +48,6 @@ type AccessRestrictionWithOptions struct {
 	// +optional
 	Options map[string]string `json:"options,omitempty" protobuf:"bytes,2,rep,name=options"`
 }
+
+// Capabilities is a series of capabilities of a machine image or type.
+type Capabilities map[string]string

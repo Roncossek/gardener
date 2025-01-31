@@ -2197,6 +2197,22 @@ func schema_pkg_apis_core_v1beta1_CloudProfileSpec(ref common.ReferenceCallback)
 							Ref:         ref("github.com/gardener/gardener/pkg/apis/core/v1beta1.Bastion"),
 						},
 					},
+					"capabilitiesDefinition": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Capabilities contains the definition of all possible capabilities of the CloudProfile. Only capabilities and values defined here can be used in the MachineImage and MachineType definitions. The order of the capability values are relevant. To the left are the most important values. During maintenance upgrades the image that enables most important capabilities will be selected.",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: "",
+										Type:    []string{"string"},
+										Format:  "",
+									},
+								},
+							},
+						},
+					},
 				},
 				Required: []string{"kubernetes", "machineImages", "machineTypes", "regions", "type"},
 			},
@@ -5255,6 +5271,22 @@ func schema_pkg_apis_core_v1beta1_Machine(ref common.ReferenceCallback) common.O
 							Format:      "",
 						},
 					},
+					"capabilities": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Capabilities contains the union of capabilities of a logical MachineImage version.",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: "",
+										Type:    []string{"string"},
+										Format:  "",
+									},
+								},
+							},
+						},
+					},
 				},
 				Required: []string{"type"},
 			},
@@ -5434,12 +5466,25 @@ func schema_pkg_apis_core_v1beta1_MachineImageVersion(ref common.ReferenceCallba
 							Format:      "",
 						},
 					},
+					"capabilitySets": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Capabilities contains the set of capabilities of a logical MachineImage version.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref("k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1.JSON"),
+									},
+								},
+							},
+						},
+					},
 				},
 				Required: []string{"version"},
 			},
 		},
 		Dependencies: []string{
-			"github.com/gardener/gardener/pkg/apis/core/v1beta1.CRI", "k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
+			"github.com/gardener/gardener/pkg/apis/core/v1beta1.CRI", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1.JSON", "k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
 	}
 }
 
@@ -5494,6 +5539,22 @@ func schema_pkg_apis_core_v1beta1_MachineType(ref common.ReferenceCallback) comm
 							Description: "Architecture is the CPU architecture of this machine type.",
 							Type:        []string{"string"},
 							Format:      "",
+						},
+					},
+					"capabilities": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Capabilities contains the capabilities of the machine type.",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: "",
+										Type:    []string{"string"},
+										Format:  "",
+									},
+								},
+							},
 						},
 					},
 				},
@@ -8766,12 +8827,25 @@ func schema_pkg_apis_core_v1beta1_ShootMachineImage(ref common.ReferenceCallback
 							Format:      "",
 						},
 					},
+					"capabilitySets": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Capabilities contains the union of capabilities of a logical MachineImage version.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref("k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1.JSON"),
+									},
+								},
+							},
+						},
+					},
 				},
 				Required: []string{"name"},
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/runtime.RawExtension"},
+			"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1.JSON", "k8s.io/apimachinery/pkg/runtime.RawExtension"},
 	}
 }
 

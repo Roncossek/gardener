@@ -5,6 +5,7 @@
 package core
 
 import (
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -61,6 +62,8 @@ type CloudProfileSpec struct {
 	VolumeTypes []VolumeType
 	// Bastion contains machine and image properties
 	Bastion *Bastion
+	// +optional
+	CapabilitiesDefinition Capabilities
 }
 
 // SeedSelector contains constraints for selecting seed to be usable for shoots using a profile
@@ -105,6 +108,8 @@ type MachineImageVersion struct {
 	// - '>= 1.26' - supports only kubelet versions greater than or equal to 1.26
 	// - '< 1.26' - supports only kubelet versions less than 1.26
 	KubeletVersionConstraint *string
+	// Capabilities contains the set of capabilities of a logical MachineImage version.
+	CapabilitySets []apiextensionsv1.JSON
 }
 
 // ExpirableVersion contains a version and an expiration date.
@@ -133,6 +138,8 @@ type MachineType struct {
 	Usable *bool
 	// Architecture is the CPU architecture of this machine type.
 	Architecture *string
+	// Capabilities contains the capabilities of the machine type.
+	Capabilities Capabilities
 }
 
 // MachineTypeStorage is the amount of storage associated with the root volume of this machine type.

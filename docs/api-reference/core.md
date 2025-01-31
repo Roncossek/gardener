@@ -468,6 +468,23 @@ Bastion
 <p>Bastion contains the machine and image properties</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>capabilitiesDefinition</code></br>
+<em>
+<a href="#core.gardener.cloud/v1beta1.Capabilities">
+Capabilities
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Capabilities contains the definition of all possible capabilities of the CloudProfile.
+Only capabilities and values defined here can be used in the MachineImage and MachineType definitions.
+The order of the capability values are relevant. To the left are the most important values.
+During maintenance upgrades the image that enables most important capabilities will be selected.</p>
+</td>
+</tr>
 </table>
 </td>
 </tr>
@@ -3344,6 +3361,17 @@ CRIName
 <p>
 <p>CRIName is a type alias for the CRI name string.</p>
 </p>
+<h3 id="core.gardener.cloud/v1beta1.Capabilities">Capabilities
+(<code>map[string]string</code> alias)</p></h3>
+<p>
+(<em>Appears on:</em>
+<a href="#core.gardener.cloud/v1beta1.CloudProfileSpec">CloudProfileSpec</a>, 
+<a href="#core.gardener.cloud/v1beta1.Machine">Machine</a>, 
+<a href="#core.gardener.cloud/v1beta1.MachineType">MachineType</a>)
+</p>
+<p>
+<p>Capabilities is a series of capabilities of a machine image or type.</p>
+</p>
 <h3 id="core.gardener.cloud/v1beta1.CloudProfileReference">CloudProfileReference
 </h3>
 <p>
@@ -3538,6 +3566,23 @@ Bastion
 <td>
 <em>(Optional)</em>
 <p>Bastion contains the machine and image properties</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>capabilitiesDefinition</code></br>
+<em>
+<a href="#core.gardener.cloud/v1beta1.Capabilities">
+Capabilities
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Capabilities contains the definition of all possible capabilities of the CloudProfile.
+Only capabilities and values defined here can be used in the MachineImage and MachineType definitions.
+The order of the capability values are relevant. To the left are the most important values.
+During maintenance upgrades the image that enables most important capabilities will be selected.</p>
 </td>
 </tr>
 </tbody>
@@ -7676,6 +7721,20 @@ string
 <p>Architecture is CPU architecture of machines in this worker pool.</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>capabilities</code></br>
+<em>
+<a href="#core.gardener.cloud/v1beta1.Capabilities">
+Capabilities
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Capabilities contains the union of capabilities of a logical MachineImage version.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="core.gardener.cloud/v1beta1.MachineControllerManagerSettings">MachineControllerManagerSettings
@@ -7907,6 +7966,20 @@ Examples:
 - &lsquo;&lt; 1.26&rsquo; - supports only kubelet versions less than 1.26</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>capabilitySets</code></br>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#json-v1-apiextensions-k8s-io">
+[]Kubernetes apiextensions/v1.JSON
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Capabilities contains the set of capabilities of a logical MachineImage version.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="core.gardener.cloud/v1beta1.MachineType">MachineType
@@ -8013,6 +8086,20 @@ string
 <td>
 <em>(Optional)</em>
 <p>Architecture is the CPU architecture of this machine type.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>capabilities</code></br>
+<em>
+<a href="#core.gardener.cloud/v1beta1.Capabilities">
+Capabilities
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Capabilities contains the capabilities of the machine type.</p>
 </td>
 </tr>
 </tbody>
@@ -11890,6 +11977,20 @@ string
 <em>(Optional)</em>
 <p>Version is the version of the shoot&rsquo;s image.
 If version is not provided, it will be defaulted to the latest version from the CloudProfile.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>capabilitySets</code></br>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#json-v1-apiextensions-k8s-io">
+[]Kubernetes apiextensions/v1.JSON
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Capabilities contains the union of capabilities of a logical MachineImage version.</p>
 </td>
 </tr>
 </tbody>
