@@ -34,8 +34,8 @@ var _ = FDescribe("CloudProfile Validation Tests ", func() {
 						}},
 					},
 					CapabilitiesDefinition: map[string]string{
-						"architecture": "amd64,arm64",
-						"hypervisor":   "gen1,gen2,gen3",
+						"architecture":   "amd64,arm64",
+						"hypervisorType": "gen1,gen2,gen3",
 					},
 					MachineImages: []core.MachineImage{{
 						Name:           "MrImage",
@@ -59,8 +59,8 @@ var _ = FDescribe("CloudProfile Validation Tests ", func() {
 						Name:         "MrType",
 						Architecture: &amd64,
 						Capabilities: map[string]string{
-							"architecture": "amd64",
-							"hypervisor":   "gen2",
+							"architecture":   "amd64",
+							"hypervisorType": "gen2",
 						},
 					}},
 				},
@@ -70,6 +70,7 @@ var _ = FDescribe("CloudProfile Validation Tests ", func() {
 			errorList := ValidateCloudProfile(cloudProfile)
 			Expect(errorList).To(BeEmpty())
 		})
+
 	})
 
 })
