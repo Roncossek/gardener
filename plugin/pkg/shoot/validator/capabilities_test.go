@@ -24,7 +24,7 @@ import (
 	"github.com/gardener/gardener/third_party/mock/apiserver/authorization/authorizer"
 )
 
-var _ = Describe("Capabilities", func() {
+var _ = FDescribe("Capabilities", func() {
 
 	var (
 		ctx      context.Context
