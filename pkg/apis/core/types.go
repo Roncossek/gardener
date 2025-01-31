@@ -53,3 +53,5 @@ type AccessRestrictionWithOptions struct {
 	// +optional
 	Options map[string]string
 }
+
+type Capabilities map[string]string

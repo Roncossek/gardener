@@ -421,6 +421,13 @@ message CloudProfileSpec {
   // Bastion contains the machine and image properties
   // +optional
   optional Bastion bastion = 10;
+
+  // Capabilities contains the definition of all possible capabilities of the CloudProfile.
+  // Only capabilities and values defined here can be used in the MachineImage and MachineType definitions.
+  // The order of the capability values are relevant. To the left are the most important values.
+  // During maintenance upgrades the image that enables most important capabilities will be selected.
+  // +optional
+  map<string, string> capabilitiesDefinition = 11;
 }
 
 // ClusterAutoscaler contains the configuration flags for the Kubernetes cluster autoscaler.
@@ -1705,6 +1712,10 @@ message Machine {
   // Architecture is CPU architecture of machines in this worker pool.
   // +optional
   optional string architecture = 3;
+
+  // Capabilities contains the union of capabilities of a logical MachineImage version.
+  // +optional
+  map<string, string> capabilities = 4;
 }
 
 // MachineControllerManagerSettings contains configurations for different worker-pools. Eg. MachineDrainTimeout, MachineHealthTimeout.
@@ -1767,6 +1778,10 @@ message MachineImageVersion {
   // - '< 1.26' - supports only kubelet versions less than 1.26
   // +optional
   optional string kubeletVersionConstraint = 4;
+
+  // Capabilities contains the set of capabilities of a logical MachineImage version.
+  // +optional
+  repeated .k8s.io.apiextensions_apiserver.pkg.apis.apiextensions.v1.JSON capabilitySets = 5;
 }
 
 // MachineType contains certain properties of a machine type.
@@ -1794,6 +1809,10 @@ message MachineType {
   // Architecture is the CPU architecture of this machine type.
   // +optional
   optional string architecture = 7;
+
+  // Capabilities contains the capabilities of the machine type.
+  // +optional
+  map<string, string> capabilities = 8;
 }
 
 // MachineTypeStorage is the amount of storage associated with the root volume of this machine type.
@@ -2961,6 +2980,10 @@ message ShootMachineImage {
   // If version is not provided, it will be defaulted to the latest version from the CloudProfile.
   // +optional
   optional string version = 3;
+
+  // Capabilities contains the union of capabilities of a logical MachineImage version.
+  // +optional
+  repeated .k8s.io.apiextensions_apiserver.pkg.apis.apiextensions.v1.JSON capabilitySets = 4;
 }
 
 // ShootNetworks contains the default networks CIDRs for shoots.

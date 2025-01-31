@@ -9,6 +9,7 @@ import (
 
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -424,9 +425,6 @@ type DNSIncludeExclude struct {
 	// Exclude is a list of domains that shall be excluded.
 	Exclude []string
 }
-
-// DefaultDomain is the default value in the Shoot's '.spec.dns.domain' when '.spec.dns.provider' is 'unmanaged'
-const DefaultDomain = "cluster.local"
 
 // Extension contains type and provider information for Shoot extensions.
 type Extension struct {
@@ -1293,6 +1291,9 @@ type Machine struct {
 	Image *ShootMachineImage
 	// Architecture is the CPU architecture of the machines in this worker pool.
 	Architecture *string
+	// TODO (Roncossek) Remove. Only needed in Worker
+	// Capabilities contains the union of capabilities of a logical MachineImage version.
+	Capabilities Capabilities
 }
 
 // ShootMachineImage defines the name and the version of the shoot's machine image in any environment. Has to be
@@ -1305,6 +1306,9 @@ type ShootMachineImage struct {
 	// Version is the version of the shoot's image.
 	// If version is not provided, it will be defaulted to the latest version from the CloudProfile.
 	Version string
+	// Capabilities contains the union of capabilities of a logical MachineImage version.
+	// TODO (Roncossek) Remove not needed
+	CapabilitySets []apiextensionsv1.JSON
 }
 
 // Volume contains information about the volume type and size.
